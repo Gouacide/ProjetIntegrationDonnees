@@ -43,8 +43,15 @@
 			  }
 		
 			response.json().then(function(data) {
+				var j;
+				for(j=0;j<data.records.length;j++){
+					if (!data.records[j].geometry){
+						delete(data.records[j]);
+					} 
+				}
+				
 				var i;
-				for(i=0; i<data.facet_groups[0].facets.length; i++){
+				for(i=1; i<data.facet_groups[0].facets.length; i++){
 				var node = document.createElement("OPTION");                 // Create a <li> node -->
 				var textnode = document.createTextNode(data.facet_groups[0].facets[i].name);         // Create a text node
 				node.appendChild(textnode);                              // Append the text to <li> -->
