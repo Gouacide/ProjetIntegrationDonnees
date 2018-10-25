@@ -19,9 +19,7 @@
 		 <button type="button" onclick="clearMarkers()">Clear</button> 
 		</div>
 		<div id="mapid" style="width: 1200px; height: 500px;"></div>
-		<script type="text/javascript">
-		var theMarkers= {};
-		
+		<script type="text/javascript">		
 		var mymap = L.map('mapid').setView([48.864716, 2.349014], 12);
 		 
 		L.tileLayer('https://api.tiles.mapbox.com/v4/{id}/{z}/{x}/{y}.png?access_token=pk.eyJ1IjoibWFwYm94IiwiYSI6ImNpejY4NXVycTA2emYycXBndHRqcmZ3N3gifQ.rJcFIG214AriISLbB6B5aw', {
@@ -85,7 +83,6 @@
 					var two = data.records[i].geometry.coordinates[1]
 					var marker = L.marker([two,one]).addTo(mymap);
 					marker.bindPopup("<b>"+test.records[i].fields.titre+"</b><br>"+test.records[i].fields.realisateur).openPopup();
-					theMarkers = theMarkers+marker;
 					}
 			  });
 			}
