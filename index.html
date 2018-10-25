@@ -19,7 +19,9 @@
 		 <button type="button" onclick="clearMarkers()">Clear</button> 
 		</div>
 		<div id="mapid" style="width: 1200px; height: 500px;"></div>
-		<script type="text/javascript">		
+		<script type="text/javascript">	
+		var removeLayers = [];	<!-- Conteneur de nos futurs Pins-->
+		
 		var mymap = L.map('mapid').setView([48.864716, 2.349014], 12);
 		 
 		L.tileLayer('https://api.tiles.mapbox.com/v4/{id}/{z}/{x}/{y}.png?access_token=pk.eyJ1IjoibWFwYm94IiwiYSI6ImNpejY4NXVycTA2emYycXBndHRqcmZ3N3gifQ.rJcFIG214AriISLbB6B5aw', {
@@ -29,9 +31,8 @@
 			'Imagery © <a href="https://www.mapbox.com/">Mapbox</a>',
 		id: 'mapbox.streets'
 		}).addTo(mymap);
+		
 		<!-- Liste des réalisateurs -->
-		
-		
 		fetch('https://opendata.paris.fr/api/records/1.0/search/?dataset=tournagesdefilmsparis2011&facet=realisateur&facet=organisme_demandeur&facet=type_de_tournage&facet=ardt')
 		  .then(
 			function(response) {
@@ -58,8 +59,6 @@
 			var splitter = real.split(" ");
 			var prenom = splitter[0]
 			var nom = splitter[1]
-			console.log(prenom+nom);
-			console.log(real);
 			
 			fetch('https://opendata.paris.fr/api/records/1.0/search/?dataset=tournagesdefilmsparis2011&facet=realisateur&facet=ardt&refine.realisateur='+prenom+"+"+nom)
 		  .then(
@@ -72,17 +71,14 @@
 
 			  // Examine the text in the response
 			  response.json().then(function(data) {
-				<!--console.log(data.records[0].geometry.coordinates);-->
-				var one = data.records[0].geometry.coordinates[0]
-				var two = data.records[0].geometry.coordinates[1]
-				var marker = L.marker([two,one]).addTo(mymap);
-				var test = data;
 				var i;
-				for(i=0; i<test.records.length; i++){
+				for(i=0; i<data.records.length; i++){
 					var one = data.records[i].geometry.coordinates[0]
 					var two = data.records[i].geometry.coordinates[1]
 					var marker = L.marker([two,one]).addTo(mymap);
-					marker.bindPopup("<b>"+test.records[i].fields.titre+"</b><br>"+test.records[i].fields.realisateur).openPopup();
+					mymap.addLayer(marker);
+					removeLayers.push(marker);
+					marker.bindPopup("<b>"+data.records[i].fields.titre+"</b><br>"+data.records[i].fields.realisateur).openPopup();
 					}
 			  });
 			}
@@ -90,17 +86,11 @@
 		}
 		
 		function clearMarkers(){
-			mymap.eachLayer(function (layer) {
-				mymap.removeLayer(layer)
-			}); 
-		}
-		<!-- Carte -->
-		
-
-		<!-- var popup = L.popup() -->
-		<!-- .setLatLng([51.5, -0.09]) -->
-		<!-- .setContent("I am a standalone popup.") -->
-		<!-- .openOn(mymap); -->
+			for (var i=0;i<removeLayers.length;i++) {  			
+			   mymap.removeLayer(removeLayers[i]);  
+			}
+			removeLayers=[];
+			} 
 		 </script>
 	</body>
 </html>		
