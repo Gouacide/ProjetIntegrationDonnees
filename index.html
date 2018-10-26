@@ -74,12 +74,12 @@
 				var i;
 				for(i=0; i<data.records.length; i++){
 					if(data.records[i].geometry){
-						var one = data2.records[i].geometry.coordinates[0]
-						var two = data2.records[i].geometry.coordinates[1]
+						var one = data.records[i].geometry.coordinates[0]
+						var two = data.records[i].geometry.coordinates[1]
 						var marker = L.marker([two,one]).addTo(mymap);
 						mymap.addLayer(marker);
 						removeLayers.push(marker);
-						marker.bindPopup("<b>"+data2.records[i].fields.titre+"</b><br>"+data2.records[i].fields.realisateur).openPopup();
+						marker.bindPopup("<b>"+data.records[i].fields.titre+"</b><br>"+data.records[i].fields.realisateur).openPopup();
 					}
 				}
 			  });
