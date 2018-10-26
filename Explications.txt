@@ -1,0 +1,4 @@
+Le but du projet est d'afficher des lieux de tournages sur une carte.
+Nous utilisons deux API, leafletjs.com pour la carte et opendata.paris.fr pour les données.
+Nous avons récupérer une liste de film tournés à Paris, ainsi que leurs lieux de tournage.
+Nous recupérons leurs coordonnées via un fetch et nous les affichons sur la carte.
