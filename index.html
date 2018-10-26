@@ -56,11 +56,11 @@
 
 		function showFilmByReal(){
 			var real = document.getElementById('myList').value;
-			var splitter = real.split(" ");
-			var prenom = splitter[0]
-			var nom = splitter[1]
+			var splitter = real.replace(" ","+");
+			//var prenom = splitter[0]
+			//var nom = splitter[1]
 			
-			fetch('https://opendata.paris.fr/api/records/1.0/search/?dataset=tournagesdefilmsparis2011&facet=realisateur&facet=ardt&refine.realisateur='+prenom+"+"+nom)
+			fetch('https://opendata.paris.fr/api/records/1.0/search/?dataset=tournagesdefilmsparis2011&facet=realisateur&facet=ardt&refine.realisateur='+splitter)
 		  .then(
 			function(response) {
 			  if (response.status !== 200) {
@@ -72,19 +72,22 @@
 			  // Examine the text in the response
 			  response.json().then(function(data) {
 				var j;
+				data2 = [];
 				for(j=0;j<data.records.length;j++){
 					if (!data.records[j].geometry){
 						delete(data.records[j]);
-					} 
+					}
+					data2=data;
+					console.log(data2);
 				}
 				var i;
 				for(i=1; i<data.records.length; i++){
-					var one = data.records[i].geometry.coordinates[0]
-					var two = data.records[i].geometry.coordinates[1]
+					var one = data2.records[i].geometry.coordinates[0]
+					var two = data2.records[i].geometry.coordinates[1]
 					var marker = L.marker([two,one]).addTo(mymap);
 					mymap.addLayer(marker);
 					removeLayers.push(marker);
-					marker.bindPopup("<b>"+data.records[i].fields.titre+"</b><br>"+data.records[i].fields.realisateur).openPopup();
+					marker.bindPopup("<b>"+data2.records[i].fields.titre+"</b><br>"+data2.records[i].fields.realisateur).openPopup();
 					}
 			  });
 			}
