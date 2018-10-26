@@ -71,24 +71,17 @@
 
 			  // Examine the text in the response
 			  response.json().then(function(data) {
-				var j;
-				data2 = [];
-				for(j=0;j<data.records.length;j++){
-					if (!data.records[j].geometry){
-						delete(data.records[j]);
-					}
-					data2=data;
-					console.log(data2);
-				}
 				var i;
 				for(i=0; i<data.records.length; i++){
-					var one = data2.records[i].geometry.coordinates[0]
-					var two = data2.records[i].geometry.coordinates[1]
-					var marker = L.marker([two,one]).addTo(mymap);
-					mymap.addLayer(marker);
-					removeLayers.push(marker);
-					marker.bindPopup("<b>"+data2.records[i].fields.titre+"</b><br>"+data2.records[i].fields.realisateur).openPopup();
+					if(data.records[i].geometry){
+						var one = data2.records[i].geometry.coordinates[0]
+						var two = data2.records[i].geometry.coordinates[1]
+						var marker = L.marker([two,one]).addTo(mymap);
+						mymap.addLayer(marker);
+						removeLayers.push(marker);
+						marker.bindPopup("<b>"+data2.records[i].fields.titre+"</b><br>"+data2.records[i].fields.realisateur).openPopup();
 					}
+				}
 			  });
 			}
 		  );
