@@ -81,7 +81,7 @@
 					console.log(data2);
 				}
 				var i;
-				for(i=1; i<data.records.length; i++){
+				for(i=0; i<data.records.length; i++){
 					var one = data2.records[i].geometry.coordinates[0]
 					var two = data2.records[i].geometry.coordinates[1]
 					var marker = L.marker([two,one]).addTo(mymap);
